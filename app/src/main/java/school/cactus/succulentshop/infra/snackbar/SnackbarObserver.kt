@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.material.snackbar.Snackbar
+import school.cactus.succulentshop.resolveAsString
 
 class SnackbarObserver : LifecycleObserver {
     private var snackbar: Snackbar? = null
