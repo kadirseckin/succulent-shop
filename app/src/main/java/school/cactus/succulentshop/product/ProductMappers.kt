@@ -14,7 +14,8 @@ fun Product.toProductItem() = ProductItem(
     description = description,
     price = price.formatPrice(),
     imageUrl = BASE_URL + image.formats.small.url,
-    highResImageUrl = BASE_URL + image.formats.medium.url
+    highResImageUrl = BASE_URL + image.formats.medium.url,
+    height = image.formats.medium.height
 )
 
 private fun Double.formatPrice() = String.format("$%.2f", this)
@@ -29,7 +30,8 @@ fun ProductItem.toProductEntity() = ProductEntity(
     description = description,
     price = price,
     imageUrl = imageUrl,
-    highResImageUrl = highResImageUrl
+    highResImageUrl = highResImageUrl,
+    height = height
 )
 
 @JvmName("toProductItemListProductEntity")
@@ -43,5 +45,6 @@ fun ProductEntity.toProductItem() = ProductItem(
     description = description,
     price = price,
     imageUrl = imageUrl,
-    highResImageUrl = highResImageUrl
+    highResImageUrl = highResImageUrl,
+    height = height
 )

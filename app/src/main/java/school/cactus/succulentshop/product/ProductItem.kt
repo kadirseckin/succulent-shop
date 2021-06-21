@@ -7,4 +7,5 @@ data class ProductItem(
     val price: String,
     val imageUrl: String,
     val highResImageUrl: String,
+    val height: Int
 )

@@ -12,4 +12,5 @@ data class ProductEntity(
     val price: String,
     @ColumnInfo(name = "image_url") val imageUrl: String,
     @ColumnInfo(name = "high_res_image_url") val highResImageUrl: String,
+    val height: Int
 )

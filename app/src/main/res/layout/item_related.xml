@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="relatedProduct"
+            type="school.cactus.succulentshop.product.ProductItem" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_marginStart="16dp"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/relatedImageView"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_launcher_background"
+                app:imageUrl="@{relatedProduct.highResImageUrl}" />
+
+            <TextView
+                android:id="@+id/relatedTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="16dp"
+                android:textColor="@color/primaryText"
+                android:text="@{relatedProduct.title}"
+                app:layout_constraintTop_toBottomOf="@id/relatedImageView"
+                tools:text="Small decorative succulent pot hanger" />
+
+            <TextView
+                android:id="@+id/relatedPriceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/teal"
+                android:fontFamily="sans-serif-light"
+                android:padding="4dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:text="@{relatedProduct.price}"
+                app:layout_constraintBottom_toBottomOf="@id/relatedImageView"
+                app:layout_constraintEnd_toEndOf="@id/relatedImageView"
+                tools:text="$29.90" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

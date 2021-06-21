@@ -11,4 +11,21 @@
     <string name="retry">Retry</string>
     <string name="unexpected_error_occurred">Unexpected error occurred</string>
     <string name="your_session_is_expired">Your session is expired. Please log in.</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account">Already have an account</string>
+    <string name="username">Username</string>
+    <string name="e_mail">Email</string>
+    <string name="emailRequired">Email is required.</string>
+    <string name="invalidEmail">Email is invalid.</string>
+    <string name="shortPassword">Password is too short.</string>
+    <string name="longPassword">Password is too long.</string>
+    <string name="badEmailFormat">Password must contain one digit, one uppercase letter, one lowercase letter and one special character.</string>
+    <string name="userNameRequired">Username is required.</string>
+    <string name="badUserNameFormat">Username can only include a-z, 0-9 and _ characters.</string>
+    <string name="shortUserName">Username is too short.</string>
+    <string name="longUserName">Username is too long.</string>
+    <string name="passwordRequired">Password is required.</string>
+    <string name="log_out">Log out</string>
+    <string name="related_products_title">Related Products:</string>
+    <string name="plant">Plant</string>
 </resources>

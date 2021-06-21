@@ -1,12 +1,14 @@
 package school.cactus.succulentshop.infra.snackbar
 
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.material.snackbar.Snackbar
-import school.cactus.succulentshop.resolveAsString
 
-class SnackbarObserver {
+class SnackbarObserver : LifecycleObserver {
     private var snackbar: Snackbar? = null
 
     fun observe(
@@ -29,5 +31,11 @@ class SnackbarObserver {
             } else {
                 snackbar?.dismiss()
             }
-        }
+        }.also { lifecycleOwner.lifecycle.addObserver(this) }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun listenDestroyEvent() {
+        snackbar?.dismiss()
+    }
 }
+

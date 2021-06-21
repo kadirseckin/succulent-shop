@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import school.cactus.succulentshop.R
 
-
 class ProductDecoration : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,

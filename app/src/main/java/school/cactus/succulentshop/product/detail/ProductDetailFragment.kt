@@ -18,7 +18,9 @@ class ProductDetailFragment : BaseFragment() {
     private val args: ProductDetailFragmentArgs by navArgs()
 
     override val viewModel: ProductDetailViewModel by viewModels {
-        ProductDetailViewModelFactory(args.productId, ProductDetailRepository())
+        ProductDetailViewModelFactory(
+            args.productId, ProductDetailRepository()
+        )
     }
 
     override fun onCreateView(

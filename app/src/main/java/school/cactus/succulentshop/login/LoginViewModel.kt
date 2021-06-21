@@ -7,14 +7,11 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import kotlinx.coroutines.launch
 import school.cactus.succulentshop.R
+import school.cactus.succulentshop.Result.*
 import school.cactus.succulentshop.auth.JwtStore
 import school.cactus.succulentshop.infra.BaseViewModel
 import school.cactus.succulentshop.infra.snackbar.SnackbarAction
 import school.cactus.succulentshop.infra.snackbar.SnackbarState
-import school.cactus.succulentshop.login.LoginRepository.LoginResult.ClientError
-import school.cactus.succulentshop.login.LoginRepository.LoginResult.Failure
-import school.cactus.succulentshop.login.LoginRepository.LoginResult.Success
-import school.cactus.succulentshop.login.LoginRepository.LoginResult.UnexpectedError
 import school.cactus.succulentshop.login.validation.IdentifierValidator
 import school.cactus.succulentshop.login.validation.PasswordValidator
 
@@ -35,14 +32,18 @@ class LoginViewModel(
     val identifierErrorMessage: LiveData<Int> = _identifierErrorMessage
     val passwordErrorMessage: LiveData<Int> = _passwordErrorMessage
 
+    init {
+        if (store.loadJwt() != null) navigateToProductsPage()
+    }
+
     fun onLoginButtonClick() = viewModelScope.launch {
         if (isIdentifierValid() and isPasswordValid()) {
             val result =
                 repository.sendLoginRequest(identifier.value.orEmpty(), password.value.orEmpty())
 
             when (result) {
-                is Success -> onSuccess(result.jwt)
-                is ClientError -> onClientError(result.errorMessage)
+                is Success -> onSuccess(result.value)
+                is ClientError -> onClientError(result.value)
                 UnexpectedError -> onUnexpectedError()
                 Failure -> onFailure()
             }
@@ -51,9 +52,7 @@ class LoginViewModel(
 
     private fun onSuccess(jwt: String) {
         store.saveJwt(jwt)
-
-        val directions = LoginFragmentDirections.loginSuccessful()
-        navigation.navigate(directions)
+        navigateToProductsPage()
     }
 
     private fun onClientError(errorMessage: String) {
@@ -81,6 +80,16 @@ class LoginViewModel(
                 }
             )
         )
+    }
+
+    private fun navigateToProductsPage() {
+        val directions = LoginFragmentDirections.loginSuccessful()
+        navigation.navigate(directions)
+    }
+
+    fun navigateToSignupPage() {
+        val directions = LoginFragmentDirections.loginToSignup()
+        navigation.navigate(directions)
     }
 
     private fun isIdentifierValid(): Boolean {

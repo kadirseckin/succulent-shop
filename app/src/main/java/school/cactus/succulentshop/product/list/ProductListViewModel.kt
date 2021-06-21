@@ -1,5 +1,6 @@
 package school.cactus.succulentshop.product.list
 
+import androidx.annotation.MenuRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -7,43 +8,58 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import school.cactus.succulentshop.R
+import school.cactus.succulentshop.Result.*
+import school.cactus.succulentshop.auth.JwtStore
 import school.cactus.succulentshop.infra.BaseViewModel
 import school.cactus.succulentshop.infra.snackbar.SnackbarAction
 import school.cactus.succulentshop.infra.snackbar.SnackbarState
 import school.cactus.succulentshop.product.ProductItem
-import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.Failure
-import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.Success
-import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.TokenExpired
-import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.UnexpectedError
 
-class ProductListViewModel(private val repository: ProductListRepository) : BaseViewModel() {
+class ProductListViewModel(
+    private val store: JwtStore,
+    private val repository: ProductListRepository
+) : BaseViewModel() {
+
     private val _products = MutableLiveData<List<ProductItem>>()
-
     val products: LiveData<List<ProductItem>> = _products
+
+    private val _isProgressBarVisible = MutableLiveData<Boolean>()
+    val isProgressBarVisible: LiveData<Boolean> = _isProgressBarVisible
+
+    private val _isRefreshing = MutableLiveData<Boolean>()
+    val isRefreshing: LiveData<Boolean> = _isRefreshing
 
     val itemClickListener: (ProductItem) -> Unit = {
         val action = ProductListFragmentDirections.openProductDetail(it.id)
         navigation.navigate(action)
     }
 
+    val onRefreshListener: () -> Unit = {
+        fetchProducts()
+        _isRefreshing.value = false
+    }
+
     init {
         fetchProducts()
     }
 
-    private fun fetchProducts() = viewModelScope.launch {
-        repository.fetchProducts().collect {
+    fun fetchProducts() = viewModelScope.launch {
+        _snackbarState.value = null
 
+        repository.fetchProducts().collect {
             when (it) {
-                is Success -> onSuccess(it.products)
+                is Success -> onSuccess(it.value)
                 TokenExpired -> onTokenExpired()
                 UnexpectedError -> onUnexpectedError()
                 Failure -> onFailure()
+                Loading -> onLoading()
             }
         }
     }
 
     private fun onSuccess(products: List<ProductItem>) {
         _products.postValue(products)
+        _isProgressBarVisible.value = false
     }
 
     private fun onTokenExpired() {
@@ -77,6 +93,17 @@ class ProductListViewModel(private val repository: ProductListRepository) : Base
                 }
             )
         )
+    }
+
+    private fun onLoading() {
+        _isProgressBarVisible.value = true
+    }
+
+    fun menuItemClicked(@MenuRes id: Int) {
+        if (id == R.id.logout) {
+            store.deleteJwt()
+            navigateToLogin()
+        }
     }
 
     private fun navigateToLogin() {

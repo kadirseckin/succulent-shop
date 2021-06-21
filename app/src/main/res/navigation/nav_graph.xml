@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
@@ -12,6 +13,9 @@
             android:id="@+id/loginSuccessful"
             app:destination="@id/productListFragment"
             app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/loginToSignup"
+            app:destination="@id/signupFragment" />
     </fragment>
 
     <fragment
@@ -27,14 +31,45 @@
         android:id="@+id/productDetailFragment"
         android:name="school.cactus.succulentshop.product.detail.ProductDetailFragment"
         android:label="ProductDetailFragment">
+        <action
+            android:id="@+id/productDetailSelf"
+            app:destination="@id/productDetailFragment" />
         <argument
             android:name="productId"
             android:defaultValue="-1"
             app:argType="integer" />
+        <action
+            android:id="@+id/detailtoProductImage"
+            app:destination="@id/productImageFragment" />
     </fragment>
 
     <action
         android:id="@+id/tokenExpired"
         app:destination="@id/loginFragment"
         app:popUpTo="@id/nav_graph" />
+
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="school.cactus.succulentshop.signup.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup">
+        <action
+            android:id="@+id/signUpSuccessful"
+            app:destination="@id/productListFragment"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/signupToLogin"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/productImageFragment"
+        android:name="school.cactus.succulentshop.product.image.ProductImageFragment"
+        android:label="fragment_product_image"
+        tools:layout="@layout/fragment_product_image">
+        <argument
+            android:name="productImageUrl"
+            app:argType="string"
+            android:defaultValue="  " />
+    </fragment>
 </navigation>
